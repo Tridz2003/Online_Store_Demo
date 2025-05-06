@@ -1,4 +1,6 @@
 const Product = require('../models/product');
+const fileHelper = require('../helpers/file');
+const { file } = require('pdfkit');
 
 exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
@@ -88,6 +90,7 @@ exports.postEditProduct = (req, res, next) => {
     }
     product.title = updatedTitle;
     product.price = updatedPrice;
+    fileHelper.deleteFile(product.imageUrl); // Xoa arnh cu
     product.imageUrl = updatedImageUrl.path;
     product.description = updatedDesc;
     return product.save()
@@ -116,7 +119,14 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.deleteOne({_id: prodId, userId: req.user._id})
+  Product.findById(prodId)
+    .then(product => {
+      if(!product) {
+        return next(new Error('Product not found'));
+      }
+      fileHelper.deleteFile(product.imageUrl);
+      return Product.deleteOne({_id: prodId, userId: req.user._id})
+    })
     .then(result => {
       if(result.deletedCount === 0) {
         req.flash('error', 'You are not authorized to delete this product');
@@ -128,5 +138,5 @@ exports.postDeleteProduct = (req, res, next) => {
     .catch(err => {
       console.log(err);
       res.redirect('/admin/products');
-    });
+    })
 };
