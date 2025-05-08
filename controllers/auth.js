@@ -39,7 +39,7 @@ exports.postLogin = (req, res, next) => {
                 });
             }
             req.flash('error', 'Invalid email or password')
-            res.redirect('/login')
+            return res.redirect('/login')
         })
     })
 }
@@ -61,6 +61,7 @@ exports.getSignup = (req, res, next) => {
         path: 'signup',
         pageTitle: 'Signup',
         errorMessage: message,
+        oldEmail: null,
         isAuthencatied: false
     });
 };
@@ -70,7 +71,8 @@ exports.postSignup = (req, res, next) => {
     const password = req.body.password;
     const errors = validationResult(req);
     if(!errors.isEmpty()){
-        res.status(422).render('auth/signup', {
+        console.log(errors.array())
+        return res.status(422).render('auth/signup', {
             path: 'signup',
             pageTitle: 'Signup',
             errorMessage: errors.array()[0].msg,

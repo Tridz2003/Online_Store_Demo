@@ -34,6 +34,7 @@ router.post('/signup',
             if(value !== req.body.password){
                 throw new Error("Password confirmation does not match password")
             }
+            return true;
         })
     ],
     auth.postSignup);
