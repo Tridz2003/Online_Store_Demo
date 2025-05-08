@@ -117,8 +117,9 @@ exports.getProducts = (req, res, next) => {
     .catch(err => console.log(err));
 };
 
-exports.postDeleteProduct = (req, res, next) => {
-  const prodId = req.body.productId;
+exports.deleteProduct = (req, res, next) => {
+  const prodId = req.params.productId;
+  console.log(prodId);
   Product.findById(prodId)
     .then(product => {
       if(!product) {
@@ -128,15 +129,13 @@ exports.postDeleteProduct = (req, res, next) => {
       return Product.deleteOne({_id: prodId, userId: req.user._id})
     })
     .then(result => {
-      if(result.deletedCount === 0) {
-        req.flash('error', 'You are not authorized to delete this product');
-        return res.redirect('/login');
+      if (!result || result.deletedCount === 0) {
+        return res.status(403).json({ success: false, message: 'Not authorized to delete this product' });
       }
-      console.log('DESTROYED PRODUCT');
-      return res.redirect('/admin/products');
+      res.status(200).json({ success: true, message: 'Product deleted successfully' });
     })
     .catch(err => {
       console.log(err);
-      res.redirect('/admin/products');
+      res.status(500).json({message: 'Deleting product failed!'});
     })
 };
