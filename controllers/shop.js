@@ -154,7 +154,8 @@ exports.getCheckout = (req, res, next) => {
       isAuthencatied: req.session.isLogin,
       products: products,
       totalSum: total,
-      sessionId: session.id
+      sessionId: session.id,
+      stripePublicKey: process.env.STRIPE_PK // Truyền public key vào view
     });
   })
   .catch(err => console.log(err));

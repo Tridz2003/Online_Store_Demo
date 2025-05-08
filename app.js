@@ -83,7 +83,7 @@ mongoose.connect(
   )
   .then(result => {
     console.log('Connected Database')
-    app.listen(process.env.PORT);
+    app.listen(process.env.APP_PORT);
   })
   .catch(err => {
     console.log(err);
