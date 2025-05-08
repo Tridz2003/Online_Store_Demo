@@ -7,15 +7,14 @@ const session = require('express-session')
 const MongoDBSession = require('connect-mongodb-session')(session)
 const flash = require('connect-flash')
 const multer = require('multer')
+require('dotenv').config();
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
 
-const MONGODB_URI = 'mongodb+srv://minhtri04062003:tridepzai@nodejs-nosql.4d4cw.mongodb.net/shop?retryWrites=true&w=majority&appName=NodeJS-NoSQL'
-
 const app = express();
 const store = new MongoDBSession({
-  uri: MONGODB_URI,
+  uri: process.env.MONGODB_URI,
   collection: 'sessions'
 });
 
@@ -47,7 +46,6 @@ const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth')
 
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(multer({storage: fileStorage, fileFilter: fileFilter}).single('image'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(session({secret: 'my secret', resave: false, saveUninitialized: false, store: store}))
@@ -81,11 +79,11 @@ app.use((error, req, res, next) => {
 });
 
 mongoose.connect(
-    MONGODB_URI
+    process.env.MONGODB_URI
   )
   .then(result => {
     console.log('Connected Database')
-    app.listen(3000);
+    app.listen(process.env.PORT);
   })
   .catch(err => {
     console.log(err);

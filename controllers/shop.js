@@ -1,8 +1,9 @@
 const Order = require('../models/order');
 const Product = require('../models/product');
 const fs = require('fs');
+require('dotenv').config();
 const path = require('path');
-const stripe = require('stripe')('sk_test_51RMQxpQ1BKBIYQK9XThn17byKfq6HgLKCITMX2xet3d2bjek7JYyX2wRy0QRiLVlZFguk1Lc5V3vDQBMEYafmtut000mze8Eur');
+const stripe = require('stripe')(process.env.STRIPE_SK);
 const PDFDocument = require('pdfkit');
 
 const ITEM_PER_PAGE = 2;
