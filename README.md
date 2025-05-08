@@ -2,7 +2,7 @@
 
 ## Chức năng chính
 
-Book_Store_Demo là một ứng dụng mô tả quản lý cửa hàng sách, cung cấp các chức năng cơ bản như:
+Book_Store_Demo là một ứng dụng mô tả quản lý cửa hàng, cung cấp các chức năng cơ bản như:
 - CRUD (Tạo, Đọc, Cập nhật, Xóa).
 - Xác thực, phân quyền, và kiểm tra dữ liệu.
 - Tải lên, tải xuống tệp, phân trang.
